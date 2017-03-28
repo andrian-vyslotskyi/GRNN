@@ -19,6 +19,10 @@ grnn <- function(trainWithResults, x, sigma = 1) {
   y
 }
 
+calculateMeanSquareError <- function(dataframe) {
+  sum((dataframe$y - dataframe$predicted_y)^2) / (nrow(dataframe))
+}
+
 generateInputData <- function(n) {
   x1 <- runif(n, -1, 1)
   x2 <- runif(n, -1, 1)
@@ -42,7 +46,11 @@ shinyServer(function(input, output) {
     result <- apply(test, 1, function(x) grnn(train, as.numeric(x[1:2]), input$sigma) )
     
     colnames(test) <- c("x1", "x2", "y")
-    test["y_r"] = result
+    test["predicted_y"] = result
+    
+    mse <- calculateMeanSquareError(test)
+    output$mse <- renderText(mse)
+    
     test
   })
   

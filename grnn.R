@@ -25,6 +25,10 @@ generateInputData <- function(n) {
   x <- data.frame(v1=x1, v2=x2, v3=y)
 }
 
+calculateMeanSquareError <- function(dataframe) {
+  sum((dataframe$y - dataframe$predicted_y)^2) / (nrow(dataframe))
+}
+
 n <- 10
 train_coef <- 0.75
 
@@ -39,4 +43,7 @@ test <- input[-train_ind, ]
 
 result <- apply(test, 1, function(x) grnn(train, as.numeric(x[1:2])) )
 
-test["y_r"] = result
+colnames(test) <- c("x1", "x2", "y")
+test["predicted_y"] = result
+
+calculateMeanSquareError(test)

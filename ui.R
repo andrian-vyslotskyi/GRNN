@@ -30,7 +30,9 @@ shinyUI(fluidPage(
     
     mainPanel(
       h3("Test data with neural network results:"),
-      tableOutput("table")
+      tableOutput("table"),
+      h6("Mean square error for test data:"),
+      textOutput("mse")
     )
   )
 ))
